@@ -7,6 +7,7 @@ const DEBOUNCE_DELAY = 30000;
 const searchField = document.querySelector('#search-box');
 const countryInfo = document.querySelector('.country-info');
 const countrysList = document.querySelector('.country-list');
+searchField.value = ''
 
 searchField.addEventListener('input', debounce(inputHandler), DEBOUNCE_DELAY);
 
@@ -33,11 +34,11 @@ function countrysMarkup(countrys) {
         <div class="country-info__card">
             <div class="country-info__card-header">
                <img class="country-info__img" src="${flags.svg}" alt="${name.official}"/>
-               <h1>${name.official}</h1>
+               <h2>${name.official}</h2>
             </div>
-            <p><b>Capital:</b> ${capital}</p>
-            <p><b>Population:</b> ${population}</p>
-            <p><b>Languages:</b> ${Object.values(languages).join(', ')}</p>
+            <p><span class="country-info__data">Capital:</span> ${capital}</p>
+            <p><span class="country-info__data">Population:</span> ${population}</p>
+            <p><span class="country-info__data">Languages:</span> ${Object.values(languages).join(', ')}</p>
          </div>
         `;
       })

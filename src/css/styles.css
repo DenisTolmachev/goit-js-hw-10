@@ -47,3 +47,7 @@ body {
    margin-right: 10px;
    border: #212121 solid 1px;
 }
+
+.country-info__data {
+   font-weight: bold;
+}
