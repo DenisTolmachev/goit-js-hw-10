@@ -2,50 +2,30 @@ import './css/styles.css';
 import Notiflix from 'notiflix';
 import debounce from 'lodash.debounce';
 import { fetchCountries } from './js/fetchCountries';
+import countriesListMarkup from './templates/countriesListMarkup.hbs'
+import countryInfoMarkup from './templates/countryInfoMarkup.hbs'
 
-const DEBOUNCE_DELAY = 30000;
+const DEBOUNCE_DELAY = 300;
 const searchField = document.querySelector('#search-box');
 const countryInfo = document.querySelector('.country-info');
-const countrysList = document.querySelector('.country-list');
+const countriesList = document.querySelector('.country-list');
 searchField.value = ''
 
-searchField.addEventListener('input', debounce(inputHandler), DEBOUNCE_DELAY);
+function markupCleaner() {
+   countryInfo.innerHTML = '';
+   countriesList.innerHTML = '';
+ }
 
-function countrysMarkup(countrys) {
-  if (countrys.length > 1 && countrys.length <= 10) {
+function countriesMarkup(countries) {
+  if (countries.length > 1 && countries.length <= 10) {
     markupCleaner();
-    console.log(countrys);
-    const countrysListMarkup = countrys
-      .map(({ name, flags }) => {
-        return `
-         <li class="country-list__item">
-            <img class="country-list__img" src="${flags.svg}" alt="${name.official}"/>
-            <p class="country-list_name"><b>${name.official}</b></p>
-         </li>
-         `;
-      })
-      .join('');
-    countrysList.insertAdjacentHTML('afterbegin', countrysListMarkup);
-  } else if (countrys.length === 1) {
+    const countriesListRender = countriesListMarkup(countries)
+    countriesList.insertAdjacentHTML('afterbegin', countriesListRender);
+  } else if (countries.length === 1) {
     markupCleaner();
-    const countryInfoMarkup = countrys
-      .map(({ name, flags, capital, population, languages }) => {
-        return `
-        <div class="country-info__card">
-            <div class="country-info__card-header">
-               <img class="country-info__img" src="${flags.svg}" alt="${name.official}"/>
-               <h2>${name.official}</h2>
-            </div>
-            <p><span class="country-info__data">Capital:</span> ${capital}</p>
-            <p><span class="country-info__data">Population:</span> ${population}</p>
-            <p><span class="country-info__data">Languages:</span> ${Object.values(languages).join(', ')}</p>
-         </div>
-        `;
-      })
-      .join('');
-      console.log(countrys);
-    countryInfo.insertAdjacentHTML('afterbegin', countryInfoMarkup);
-  } else if (countrys.length > 10) {
+    const countryInfoRedner = countryInfoMarkup(countries);
+    countryInfo.insertAdjacentHTML('afterbegin', countryInfoRedner);
+  } else if (countries.length > 10) {
     Notiflix.Notify.info(`Too many matches found. Please enter a more specific name.`);
   }
 }
@@ -59,13 +39,10 @@ function inputHandler(e) {
     }
 
   fetchCountries(inputValue)
-    .then(countrys => {
-      countrysMarkup(countrys);
+    .then(countries => {
+      countriesMarkup(countries);
     })
     .catch(() => Notiflix.Notify.failure(`Oops, there is no country with that name.`));
 }
 
-function markupCleaner() {
-  countryInfo.innerHTML = '';
-  countrysList.innerHTML = '';
-}
+searchField.addEventListener('input', debounce(inputHandler, DEBOUNCE_DELAY));
