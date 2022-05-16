@@ -19,11 +19,9 @@ function markupCleaner() {
 function countriesMarkup(countries) {
   markupCleaner();
   if (countries.length > 1 && countries.length <= 10) {
-    const countriesListRender = countriesListMarkup(countries);
-    countriesList.insertAdjacentHTML('afterbegin', countriesListRender);
+    countriesList.insertAdjacentHTML('afterbegin', countriesListMarkup(countries));
   } else if (countries.length === 1) {
-    const countryInfoRedner = countryInfoMarkup(countries);
-    countryInfo.insertAdjacentHTML('afterbegin', countryInfoRedner);
+    countryInfo.insertAdjacentHTML('afterbegin', countryInfoMarkup(countries));
   } else if (countries.length > 10) {
     Notiflix.Notify.info(`Too many matches found. Please enter a more specific name.`);
   }
