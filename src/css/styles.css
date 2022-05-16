@@ -50,4 +50,5 @@ body {
 
 .country-info__data {
    font-weight: bold;
+   margin-right: 5px;
 }
